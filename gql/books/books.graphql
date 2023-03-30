@@ -1,0 +1,28 @@
+mutation addBook($input: AddBookInput!, $picture: Upload) {
+  addBook(input: $input, picture: $picture) {
+    name
+  }
+}
+
+query getBooks {
+  getBooks {
+    _id
+    name
+    image
+    category {
+      name
+    }
+  }
+}
+
+query getBooksByCategory {
+  getCategories {
+    _id
+    name
+    books {
+      _id
+      name
+      image
+    }
+  }
+}

@@ -1,0 +1,74 @@
+mutation loginUser($input: LoginUserInput!) {
+  login(input: $input)
+}
+
+mutation createUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    _id
+    email
+    name
+  }
+}
+
+query logout {
+  logout
+}
+
+query getCurrentUser {
+  me {
+    _id
+    name
+    email
+    category {
+      _id
+      name
+    }
+  }
+}
+
+query getUpdatedCurrentUser {
+  getUpdatedMe {
+    _id
+    name
+    email
+    category {
+      _id
+      name
+    }
+    userBooks {
+      book {
+        _id
+        name
+        image
+      }
+      status
+      createdAt
+    }
+  }
+}
+
+mutation updateUserGenre($input: UpdateUserGenre!) {
+  updateCategory(input: $input) {
+    _id
+    name
+    category {
+      _id
+      name
+    }
+  }
+}
+
+mutation updateUserBooks($input: UpdateUserBooks!) {
+  updateUserBooks(input: $input) {
+    _id
+    userBooks {
+      book {
+        _id
+        name
+        image
+      }
+      status
+      createdAt
+    }
+  }
+}

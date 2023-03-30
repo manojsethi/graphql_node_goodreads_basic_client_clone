@@ -1,0 +1,28 @@
+query getCategories {
+  getCategories {
+    _id
+    name
+  }
+}
+
+query getCategoryById($id: String!) {
+  getCategoryById(id: $id) {
+    _id
+    name
+    books {
+      _id
+      name
+    }
+  }
+}
+
+query getCategoriesWithBooks {
+  getCategories {
+    _id
+    name
+    books {
+      _id
+      name
+    }
+  }
+}
