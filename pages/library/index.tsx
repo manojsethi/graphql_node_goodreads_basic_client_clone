@@ -1,6 +1,6 @@
 import Loader from "@/components/appLoader";
-import AddNewBookModal from "@/components/pages/myBooks/addNewBookModal";
-import MyBooksShelfModal from "@/components/pages/myBooks/myBooksShelfModal";
+import AddNewBookModal from "@/components/pages/library/addNewBookModal";
+import MyBooksShelfModal from "@/components/pages/library/myBooksShelfModal";
 import {
   Book,
   Book_Status,
@@ -58,23 +58,16 @@ const MyBooks = () => {
       render: (row, data) => data.book?.name,
     },
     {
+      title: "Author",
+      width: 250,
+      key: "book.author",
+      render: (row, data) => data.book?.author,
+    },
+    {
       title: "Status",
       key: "status",
       render: (row, data) => {
-        return (
-          <Button
-            onClick={() => {
-              setSelectedRow(data);
-              setIsModalOpen(true);
-            }}
-            className="border-0"
-            shape="round"
-            icon={<EditOutlined className="text-2xl" />}
-            size={"middle"}
-          >
-            {data.status}
-          </Button>
-        );
+        return data.status;
       },
     },
     {
@@ -82,12 +75,26 @@ const MyBooks = () => {
       dataIndex: "createdAt",
       key: "createdAt",
     },
+    {
+      title: "Action",
+      width: 250,
+      key: "action",
+      render: (row, data) => (
+        <div
+          onClick={() => Router.push(`/library/${data.book?._id}`)}
+          className="text-2xl text-blue-600 cursor-pointer"
+        >
+          <EditFilled />
+        </div>
+      ),
+    },
   ];
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const handleClickModal = () => {
     queryUpdatedMe();
     setSelectedRow(undefined);
   };
+  console.log(selectedRow, "selected");
   return (
     <div className="px-20 my-10">
       {selectedRow && (

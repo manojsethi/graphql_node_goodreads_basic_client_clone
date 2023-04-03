@@ -11,7 +11,7 @@ import Router, { useRouter } from "next/router";
 import { useState } from "react";
 
 import goodReads from "../../assets/images/goodreads.png";
-import AddNewBookModal from "../pages/myBooks/addNewBookModal";
+import AddNewBookModal from "../pages/library/addNewBookModal";
 const Header = () => {
   const { data: data } = useGetCurrentUserQuery();
   const [addBookModal, setAddBookModal] = useState<boolean>(false);

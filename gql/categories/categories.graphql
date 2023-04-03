@@ -5,17 +5,6 @@ query getCategories {
   }
 }
 
-query getCategoryById($id: String!) {
-  getCategoryById(id: $id) {
-    _id
-    name
-    books {
-      _id
-      name
-    }
-  }
-}
-
 query getCategoriesWithBooks {
   getCategories {
     _id
@@ -23,6 +12,23 @@ query getCategoriesWithBooks {
     books {
       _id
       name
+      author
+      image
+      description
+    }
+  }
+}
+
+query getCategoryById($id: String!) {
+  getCategoryById(id: $id) {
+    _id
+    name
+    books {
+      _id
+      name
+      author
+      description
+      image
     }
   }
 }

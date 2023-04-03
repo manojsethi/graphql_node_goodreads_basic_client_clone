@@ -39,6 +39,8 @@ query getUpdatedCurrentUser {
       book {
         _id
         name
+        author
+        description
         image
       }
       status
@@ -65,6 +67,25 @@ mutation updateUserBooks($input: UpdateUserBooks!) {
       book {
         _id
         name
+        author
+        description
+        image
+      }
+      status
+      createdAt
+    }
+  }
+}
+
+mutation removeUserBooks($input: UpdateUserBooks!) {
+  removeUserBooks(input: $input) {
+    _id
+    userBooks {
+      book {
+        _id
+        name
+        author
+        description
         image
       }
       status

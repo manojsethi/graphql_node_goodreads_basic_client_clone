@@ -1,15 +1,21 @@
 import {
   Book_Status,
   UserBooks,
+  useRemoveUserBooksMutation,
   useUpdateUserBooksMutation,
 } from "@/gql/generated/graphql";
-import { CheckOutlined, DeleteOutlined } from "@ant-design/icons";
+import { CheckOutlined, DeleteFilled, DeleteOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
-import { useState } from "react";
+import Router from "next/router";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+const { confirm } = Modal;
+
 const MyBooksShelfModal = (props: {
   selectedRow: UserBooks;
   isModalOpen: boolean;
+  setCurrentStatus?: any;
   handleOk: () => any;
+  currentStatus?: any;
   setIsModalOpen: any;
 }) => {
   const [buttonArr, setButtonArr] = useState([
@@ -46,6 +52,19 @@ const MyBooksShelfModal = (props: {
       handleCancel();
     },
   });
+
+  const [
+    mutateRemoveUserBook,
+    {
+      loading: loadingRemoveUserBook,
+      error: errorRemoveUserBook,
+      data: dataRemoveUserBook,
+    },
+  ] = useRemoveUserBooksMutation({
+    onCompleted({ removeUserBooks }) {
+      Router.push("/library");
+    },
+  });
   const handleSelectedBook = (i: Book_Status) => {
     mutateAddUserBook({
       variables: {
@@ -55,14 +74,7 @@ const MyBooksShelfModal = (props: {
         },
       },
     });
-    console.log(i, "i");
-    // setButtonArr((prev) => {
-    //   prev[i].selected = prev[i].selected ? false : true;
-    //   console.log(prev, "prev");
-    //   return [...prev];
-    // });
   };
-
   return (
     <div>
       <Modal
@@ -80,18 +92,46 @@ const MyBooksShelfModal = (props: {
           <div className="items-center justify-center flex" key={index}>
             <Button
               disabled={x.selected}
-              onClick={() => handleSelectedBook(x.value)}
+              onClick={() => {
+                handleSelectedBook(x.value);
+              }}
               style={{ width: "70%", height: "2.5rem" }}
               className="mt-4 border-solid border-2 border-black"
               shape="round"
               size={"large"}
             >
-              {" "}
               {x.selected ? <CheckOutlined /> : ""}
               {x.name}
             </Button>
           </div>
         ))}
+
+        <div className="flex items-center justify-center mt-4">
+          <Button
+            className="text-center flex items-center space-x-1 justify-center cursor-pointer "
+            disabled={props.selectedRow.status !== Book_Status.Read}
+            onClick={() => {
+              confirm({
+                type: "confirm",
+                title: "Do you want remove this book from shelf?",
+
+                onOk: async () => {
+                  await mutateRemoveUserBook({
+                    variables: {
+                      input: {
+                        bookId: props.selectedRow.book?._id as string,
+                      },
+                    },
+                  });
+                  Router.push("/library");
+                },
+              });
+            }}
+          >
+            <DeleteFilled className="text-lg" />
+            <p className="mt-3 text-base font-semibold">Remove from my shelf</p>
+          </Button>
+        </div>
       </Modal>
     </div>
   );

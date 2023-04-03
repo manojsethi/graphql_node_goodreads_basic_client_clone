@@ -34,9 +34,7 @@ const RecommendedBooks = () => {
     useGetUpdatedCurrentUserLazyQuery({
       onCompleted({ getUpdatedMe }) {
         setMe(getUpdatedMe as User);
-        let userBookIds = getUpdatedMe.userBooks
-          .filter((x) => x.status == Book_Status.WantToRead)
-          .map((x) => x.book!._id);
+        let userBookIds = getUpdatedMe.userBooks.map((x) => x.book!._id);
         setUserBooksIds(userBookIds);
       },
     });
@@ -187,7 +185,7 @@ const RecommendedBooks = () => {
           </>
           <div className="items-center flex justify-center my-20 ">
             <Button
-              onClick={() => Router.push("/myBooks")}
+              onClick={() => Router.push("/library")}
               className="my-20"
               style={{ background: "#F4F1EA" }}
             >

@@ -1,6 +1,13 @@
 mutation addBook($input: AddBookInput!, $picture: Upload) {
   addBook(input: $input, picture: $picture) {
+    _id
     name
+    image
+    author
+    description
+    category {
+      name
+    }
   }
 }
 
@@ -9,6 +16,21 @@ query getBooks {
     _id
     name
     image
+    author
+    description
+    category {
+      name
+    }
+  }
+}
+
+query getBook($id: String!) {
+  getBook(id: $id) {
+    _id
+    name
+    image
+    author
+    description
     category {
       name
     }
@@ -22,6 +44,8 @@ query getBooksByCategory {
     books {
       _id
       name
+      author
+      description
       image
     }
   }

@@ -81,6 +81,8 @@ const AddNewBookForm = () => {
       variables: {
         input: {
           name: values.title,
+          author: values.author,
+          description: values.description,
           addedBy: dataMe!.me._id,
           categoryId: selectedItemsIds,
         },
@@ -155,7 +157,7 @@ const AddNewBookForm = () => {
               >
                 <Select
                   mode="multiple"
-                  placeholder="Inserted are removed"
+                  placeholder="Category"
                   value={selectedItems}
                   onChange={(value) => {
                     setSelectedItems(
@@ -173,6 +175,16 @@ const AddNewBookForm = () => {
                 />
               </Form.Item>
             )}
+          </Col>
+          <Col xs={24} md={24}>
+            <div className="font-semibold">Description</div>
+            <Form.Item
+              className="mt-1"
+              name="description"
+              rules={[{ required: true, message: "Description is required" }]}
+            >
+              <Input.TextArea rows={5}></Input.TextArea>
+            </Form.Item>
           </Col>
           <Col xs={24} md={12}>
             <div className="font-semibold">Cover Image</div>

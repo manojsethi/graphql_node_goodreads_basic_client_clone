@@ -31,6 +31,10 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+:where(.css-dev-only-do-not-override-mxhywb).ant-modal-confirm .ant-modal-confirm-btns .ant-btn+.ant-btn {
+  background-color: #F4F1EA;
+  color: black
+}
 
 @tailwind base;
 @tailwind components;

@@ -18,7 +18,9 @@ export type Scalars = {
 
 export type AddBookInput = {
   addedBy: Scalars['String'];
+  author: Scalars['String'];
   categoryId: Array<Scalars['String']>;
+  description: Scalars['String'];
   name: Scalars['String'];
   picture?: InputMaybe<Scalars['Upload']>;
 };
@@ -32,7 +34,9 @@ export enum Book_Status {
 export type Book = {
   __typename?: 'Book';
   _id: Scalars['String'];
+  author?: Maybe<Scalars['String']>;
   category: Array<Category>;
+  description?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
   name: Scalars['String'];
 };
@@ -61,6 +65,7 @@ export type Mutation = {
   createCategory: Category;
   createUser: User;
   login: Scalars['String'];
+  removeUserBooks: User;
   updateCategory: User;
   updateUserBooks: User;
 };
@@ -84,6 +89,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationLoginArgs = {
   input: LoginUserInput;
+};
+
+
+export type MutationRemoveUserBooksArgs = {
+  input: UpdateUserBooks;
 };
 
 
@@ -119,7 +129,7 @@ export type QueryGetCategoryByIdArgs = {
 
 export type UpdateUserBooks = {
   bookId: Scalars['String'];
-  status: Book_Status;
+  status?: InputMaybe<Book_Status>;
 };
 
 export type UpdateUserGenre = {
@@ -148,34 +158,41 @@ export type AddBookMutationVariables = Exact<{
 }>;
 
 
-export type AddBookMutation = { __typename?: 'Mutation', addBook: { __typename?: 'Book', name: string } };
+export type AddBookMutation = { __typename?: 'Mutation', addBook: { __typename?: 'Book', _id: string, name: string, image?: string | null, author?: string | null, description?: string | null, category: Array<{ __typename?: 'Category', name: string }> } };
 
 export type GetBooksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBooksQuery = { __typename?: 'Query', getBooks: Array<{ __typename?: 'Book', _id: string, name: string, image?: string | null, category: Array<{ __typename?: 'Category', name: string }> }> };
+export type GetBooksQuery = { __typename?: 'Query', getBooks: Array<{ __typename?: 'Book', _id: string, name: string, image?: string | null, author?: string | null, description?: string | null, category: Array<{ __typename?: 'Category', name: string }> }> };
+
+export type GetBookQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetBookQuery = { __typename?: 'Query', getBook: { __typename?: 'Book', _id: string, name: string, image?: string | null, author?: string | null, description?: string | null, category: Array<{ __typename?: 'Category', name: string }> } };
 
 export type GetBooksByCategoryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBooksByCategoryQuery = { __typename?: 'Query', getCategories: Array<{ __typename?: 'Category', _id: string, name: string, books: Array<{ __typename?: 'Book', _id: string, name: string, image?: string | null }> }> };
+export type GetBooksByCategoryQuery = { __typename?: 'Query', getCategories: Array<{ __typename?: 'Category', _id: string, name: string, books: Array<{ __typename?: 'Book', _id: string, name: string, author?: string | null, description?: string | null, image?: string | null }> }> };
 
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetCategoriesQuery = { __typename?: 'Query', getCategories: Array<{ __typename?: 'Category', _id: string, name: string }> };
 
+export type GetCategoriesWithBooksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCategoriesWithBooksQuery = { __typename?: 'Query', getCategories: Array<{ __typename?: 'Category', _id: string, name: string, books: Array<{ __typename?: 'Book', _id: string, name: string, author?: string | null, image?: string | null, description?: string | null }> }> };
+
 export type GetCategoryByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetCategoryByIdQuery = { __typename?: 'Query', getCategoryById: { __typename?: 'Category', _id: string, name: string, books: Array<{ __typename?: 'Book', _id: string, name: string }> } };
-
-export type GetCategoriesWithBooksQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetCategoriesWithBooksQuery = { __typename?: 'Query', getCategories: Array<{ __typename?: 'Category', _id: string, name: string, books: Array<{ __typename?: 'Book', _id: string, name: string }> }> };
+export type GetCategoryByIdQuery = { __typename?: 'Query', getCategoryById: { __typename?: 'Category', _id: string, name: string, books: Array<{ __typename?: 'Book', _id: string, name: string, author?: string | null, description?: string | null, image?: string | null }> } };
 
 export type LoginUserMutationVariables = Exact<{
   input: LoginUserInput;
@@ -204,7 +221,7 @@ export type GetCurrentUserQuery = { __typename?: 'Query', me: { __typename?: 'Us
 export type GetUpdatedCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUpdatedCurrentUserQuery = { __typename?: 'Query', getUpdatedMe: { __typename?: 'User', _id: string, name: string, email: string, category: Array<{ __typename?: 'Category', _id: string, name: string }>, userBooks: Array<{ __typename?: 'UserBooks', status: Book_Status, createdAt: string, book?: { __typename?: 'Book', _id: string, name: string, image?: string | null } | null }> } };
+export type GetUpdatedCurrentUserQuery = { __typename?: 'Query', getUpdatedMe: { __typename?: 'User', _id: string, name: string, email: string, category: Array<{ __typename?: 'Category', _id: string, name: string }>, userBooks: Array<{ __typename?: 'UserBooks', status: Book_Status, createdAt: string, book?: { __typename?: 'Book', _id: string, name: string, author?: string | null, description?: string | null, image?: string | null } | null }> } };
 
 export type UpdateUserGenreMutationVariables = Exact<{
   input: UpdateUserGenre;
@@ -218,13 +235,27 @@ export type UpdateUserBooksMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserBooksMutation = { __typename?: 'Mutation', updateUserBooks: { __typename?: 'User', _id: string, userBooks: Array<{ __typename?: 'UserBooks', status: Book_Status, createdAt: string, book?: { __typename?: 'Book', _id: string, name: string, image?: string | null } | null }> } };
+export type UpdateUserBooksMutation = { __typename?: 'Mutation', updateUserBooks: { __typename?: 'User', _id: string, userBooks: Array<{ __typename?: 'UserBooks', status: Book_Status, createdAt: string, book?: { __typename?: 'Book', _id: string, name: string, author?: string | null, description?: string | null, image?: string | null } | null }> } };
+
+export type RemoveUserBooksMutationVariables = Exact<{
+  input: UpdateUserBooks;
+}>;
+
+
+export type RemoveUserBooksMutation = { __typename?: 'Mutation', removeUserBooks: { __typename?: 'User', _id: string, userBooks: Array<{ __typename?: 'UserBooks', status: Book_Status, createdAt: string, book?: { __typename?: 'Book', _id: string, name: string, author?: string | null, description?: string | null, image?: string | null } | null }> } };
 
 
 export const AddBookDocument = gql`
     mutation addBook($input: AddBookInput!, $picture: Upload) {
   addBook(input: $input, picture: $picture) {
+    _id
     name
+    image
+    author
+    description
+    category {
+      name
+    }
   }
 }
     `;
@@ -261,6 +292,8 @@ export const GetBooksDocument = gql`
     _id
     name
     image
+    author
+    description
     category {
       name
     }
@@ -294,6 +327,48 @@ export function useGetBooksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetBooksQueryHookResult = ReturnType<typeof useGetBooksQuery>;
 export type GetBooksLazyQueryHookResult = ReturnType<typeof useGetBooksLazyQuery>;
 export type GetBooksQueryResult = Apollo.QueryResult<GetBooksQuery, GetBooksQueryVariables>;
+export const GetBookDocument = gql`
+    query getBook($id: String!) {
+  getBook(id: $id) {
+    _id
+    name
+    image
+    author
+    description
+    category {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetBookQuery__
+ *
+ * To run a query within a React component, call `useGetBookQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBookQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBookQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetBookQuery(baseOptions: Apollo.QueryHookOptions<GetBookQuery, GetBookQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBookQuery, GetBookQueryVariables>(GetBookDocument, options);
+      }
+export function useGetBookLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBookQuery, GetBookQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBookQuery, GetBookQueryVariables>(GetBookDocument, options);
+        }
+export type GetBookQueryHookResult = ReturnType<typeof useGetBookQuery>;
+export type GetBookLazyQueryHookResult = ReturnType<typeof useGetBookLazyQuery>;
+export type GetBookQueryResult = Apollo.QueryResult<GetBookQuery, GetBookQueryVariables>;
 export const GetBooksByCategoryDocument = gql`
     query getBooksByCategory {
   getCategories {
@@ -302,6 +377,8 @@ export const GetBooksByCategoryDocument = gql`
     books {
       _id
       name
+      author
+      description
       image
     }
   }
@@ -369,6 +446,48 @@ export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
 export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
 export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export const GetCategoriesWithBooksDocument = gql`
+    query getCategoriesWithBooks {
+  getCategories {
+    _id
+    name
+    books {
+      _id
+      name
+      author
+      image
+      description
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCategoriesWithBooksQuery__
+ *
+ * To run a query within a React component, call `useGetCategoriesWithBooksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesWithBooksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoriesWithBooksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCategoriesWithBooksQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>(GetCategoriesWithBooksDocument, options);
+      }
+export function useGetCategoriesWithBooksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>(GetCategoriesWithBooksDocument, options);
+        }
+export type GetCategoriesWithBooksQueryHookResult = ReturnType<typeof useGetCategoriesWithBooksQuery>;
+export type GetCategoriesWithBooksLazyQueryHookResult = ReturnType<typeof useGetCategoriesWithBooksLazyQuery>;
+export type GetCategoriesWithBooksQueryResult = Apollo.QueryResult<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>;
 export const GetCategoryByIdDocument = gql`
     query getCategoryById($id: String!) {
   getCategoryById(id: $id) {
@@ -377,6 +496,9 @@ export const GetCategoryByIdDocument = gql`
     books {
       _id
       name
+      author
+      description
+      image
     }
   }
 }
@@ -409,45 +531,6 @@ export function useGetCategoryByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetCategoryByIdQueryHookResult = ReturnType<typeof useGetCategoryByIdQuery>;
 export type GetCategoryByIdLazyQueryHookResult = ReturnType<typeof useGetCategoryByIdLazyQuery>;
 export type GetCategoryByIdQueryResult = Apollo.QueryResult<GetCategoryByIdQuery, GetCategoryByIdQueryVariables>;
-export const GetCategoriesWithBooksDocument = gql`
-    query getCategoriesWithBooks {
-  getCategories {
-    _id
-    name
-    books {
-      _id
-      name
-    }
-  }
-}
-    `;
-
-/**
- * __useGetCategoriesWithBooksQuery__
- *
- * To run a query within a React component, call `useGetCategoriesWithBooksQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCategoriesWithBooksQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCategoriesWithBooksQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetCategoriesWithBooksQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>(GetCategoriesWithBooksDocument, options);
-      }
-export function useGetCategoriesWithBooksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>(GetCategoriesWithBooksDocument, options);
-        }
-export type GetCategoriesWithBooksQueryHookResult = ReturnType<typeof useGetCategoriesWithBooksQuery>;
-export type GetCategoriesWithBooksLazyQueryHookResult = ReturnType<typeof useGetCategoriesWithBooksLazyQuery>;
-export type GetCategoriesWithBooksQueryResult = Apollo.QueryResult<GetCategoriesWithBooksQuery, GetCategoriesWithBooksQueryVariables>;
 export const LoginUserDocument = gql`
     mutation loginUser($input: LoginUserInput!) {
   login(input: $input)
@@ -600,6 +683,8 @@ export const GetUpdatedCurrentUserDocument = gql`
       book {
         _id
         name
+        author
+        description
         image
       }
       status
@@ -681,6 +766,8 @@ export const UpdateUserBooksDocument = gql`
       book {
         _id
         name
+        author
+        description
         image
       }
       status
@@ -715,3 +802,47 @@ export function useUpdateUserBooksMutation(baseOptions?: Apollo.MutationHookOpti
 export type UpdateUserBooksMutationHookResult = ReturnType<typeof useUpdateUserBooksMutation>;
 export type UpdateUserBooksMutationResult = Apollo.MutationResult<UpdateUserBooksMutation>;
 export type UpdateUserBooksMutationOptions = Apollo.BaseMutationOptions<UpdateUserBooksMutation, UpdateUserBooksMutationVariables>;
+export const RemoveUserBooksDocument = gql`
+    mutation removeUserBooks($input: UpdateUserBooks!) {
+  removeUserBooks(input: $input) {
+    _id
+    userBooks {
+      book {
+        _id
+        name
+        author
+        description
+        image
+      }
+      status
+      createdAt
+    }
+  }
+}
+    `;
+export type RemoveUserBooksMutationFn = Apollo.MutationFunction<RemoveUserBooksMutation, RemoveUserBooksMutationVariables>;
+
+/**
+ * __useRemoveUserBooksMutation__
+ *
+ * To run a mutation, you first call `useRemoveUserBooksMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveUserBooksMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeUserBooksMutation, { data, loading, error }] = useRemoveUserBooksMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveUserBooksMutation(baseOptions?: Apollo.MutationHookOptions<RemoveUserBooksMutation, RemoveUserBooksMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveUserBooksMutation, RemoveUserBooksMutationVariables>(RemoveUserBooksDocument, options);
+      }
+export type RemoveUserBooksMutationHookResult = ReturnType<typeof useRemoveUserBooksMutation>;
+export type RemoveUserBooksMutationResult = Apollo.MutationResult<RemoveUserBooksMutation>;
+export type RemoveUserBooksMutationOptions = Apollo.BaseMutationOptions<RemoveUserBooksMutation, RemoveUserBooksMutationVariables>;
