@@ -19,11 +19,12 @@ import moment from "moment";
 import { useState } from "react";
 // import { useForm } from "antd/es/form/Form"
 import { RcFile } from "antd/es/upload";
+import { useRouter } from "next/router";
 
-const AddNewBookForm = () => {
+const AddNewBookForm = (props: { setIsModalOpen: any }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const props: UploadProps = {
+  const uploadProps: UploadProps = {
     maxCount: 1,
     onRemove: (file) => {
       const index = fileList.indexOf(file);
@@ -40,6 +41,7 @@ const AddNewBookForm = () => {
   };
 
   const [form] = Form.useForm();
+  const router = useRouter();
 
   const [categories, setCategories] = useState<Category[]>();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -54,14 +56,18 @@ const AddNewBookForm = () => {
     { loading: loadingAddBook, error: errorAddBook, data: dataAddBook },
   ] = useAddBookMutation({
     onCompleted({ addBook }) {
-      console.log(addBook);
       form.resetFields();
+      props.setIsModalOpen(false);
+
       notification.open({
         message: "Success",
         description: "Book Added Successfully",
         placement: "topRight",
         icon: <CheckCircleOutlined style={{ color: "#00FF00" }} />,
       });
+      if (router.pathname.includes("recommended-books")) {
+        router.push("/recommended-books");
+      }
     },
   });
 
@@ -83,6 +89,7 @@ const AddNewBookForm = () => {
           name: values.title,
           author: values.author,
           description: values.description,
+          publishDate: values.date,
           addedBy: dataMe!.me._id,
           categoryId: selectedItemsIds,
         },
@@ -194,7 +201,7 @@ const AddNewBookForm = () => {
                 style={{ width: "100%" }}
                 listType="picture"
                 maxCount={1}
-                {...props}
+                {...uploadProps}
               >
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>

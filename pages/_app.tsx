@@ -14,6 +14,7 @@ import { onError } from "@apollo/client/link/error";
 import { useGetCurrentUserQuery } from "@/gql/generated/graphql";
 import { createUploadLink } from "apollo-upload-client";
 import constants from "@/utils/constants";
+import { Layout } from "antd";
 
 function createApolloClient() {
   const link = ApolloLink.from([
@@ -52,7 +53,9 @@ export default function App({ Component, pageProps }: AppProps) {
       ) : (
         <>
           <Header />
-          <Component {...pageProps} />
+          <Layout.Content className="px-20 lg:container mx-auto">
+            <Component {...pageProps} />
+          </Layout.Content>
         </>
       )}
     </ApolloProvider>

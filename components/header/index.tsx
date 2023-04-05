@@ -46,18 +46,12 @@ const Header = () => {
           </div>
           <div className="text-stone-600">
             <div className="flex text-lg cursor-pointer mt-1 space-x-5">
-              <p>
-                {router.pathname.includes("/recommendedBooks" || "/genres")
-                  ? "Getting Started"
-                  : "Home"}
-              </p>
               <p
                 className="cursor-pointer"
                 onClick={() => Router.push("/library")}
               >
                 Library
               </p>
-              <p>AddedBooks</p>
             </div>
           </div>
         </div>

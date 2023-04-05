@@ -1,7 +1,6 @@
 import {
   Book_Status,
   UserBooks,
-  useRemoveUserBooksMutation,
   useUpdateUserBooksMutation,
 } from "@/gql/generated/graphql";
 import { CheckOutlined, DeleteFilled, DeleteOutlined } from "@ant-design/icons";
@@ -34,7 +33,16 @@ const MyBooksShelfModal = (props: {
       selected: props.selectedRow.status == Book_Status.Read,
       value: Book_Status.Read,
     },
+    {
+      name: "Finish",
+      selected: props.selectedRow.status == Book_Status.Finish,
+      value: Book_Status.Finish,
+    },
   ]);
+
+  const selectedIndex = buttonArr.indexOf(
+    buttonArr.find((x) => x?.value == props.selectedRow.status)!
+  );
   const handleCancel = () => {
     props.setIsModalOpen(false);
   };
@@ -52,19 +60,7 @@ const MyBooksShelfModal = (props: {
       handleCancel();
     },
   });
-
-  const [
-    mutateRemoveUserBook,
-    {
-      loading: loadingRemoveUserBook,
-      error: errorRemoveUserBook,
-      data: dataRemoveUserBook,
-    },
-  ] = useRemoveUserBooksMutation({
-    onCompleted({ removeUserBooks }) {
-      Router.push("/library");
-    },
-  });
+  console.log(buttonArr, "but");
   const handleSelectedBook = (i: Book_Status) => {
     mutateAddUserBook({
       variables: {
@@ -85,53 +81,31 @@ const MyBooksShelfModal = (props: {
         onOk={props.handleOk}
         onCancel={handleCancel}
       >
-        <h1 className="text-center font-semibold	text-xl">
+        <h1 className="text-center font-semibold text-xl">
           Choose a shelf for this book
         </h1>
         {buttonArr.map((x, index) => (
           <div className="items-center justify-center flex" key={index}>
             <Button
-              disabled={x.selected}
+              disabled={index < selectedIndex || index > selectedIndex + 1}
               onClick={() => {
-                handleSelectedBook(x.value);
+                if (!x!.selected) handleSelectedBook(x!.value);
               }}
-              style={{ width: "70%", height: "2.5rem" }}
+              style={{
+                width: "70%",
+                height: "2.5rem",
+                backgroundColor: x!.selected ? "green" : "",
+                color: x!.selected ? "white" : "",
+                cursor: x!.selected ? "default" : "",
+              }}
               className="mt-4 border-solid border-2 border-black"
               shape="round"
               size={"large"}
             >
-              {x.selected ? <CheckOutlined /> : ""}
-              {x.name}
+              {x!.name}
             </Button>
           </div>
         ))}
-
-        <div className="flex items-center justify-center mt-4">
-          <Button
-            className="text-center flex items-center space-x-1 justify-center cursor-pointer "
-            disabled={props.selectedRow.status !== Book_Status.Read}
-            onClick={() => {
-              confirm({
-                type: "confirm",
-                title: "Do you want remove this book from shelf?",
-
-                onOk: async () => {
-                  await mutateRemoveUserBook({
-                    variables: {
-                      input: {
-                        bookId: props.selectedRow.book?._id as string,
-                      },
-                    },
-                  });
-                  Router.push("/library");
-                },
-              });
-            }}
-          >
-            <DeleteFilled className="text-lg" />
-            <p className="mt-3 text-base font-semibold">Remove from my shelf</p>
-          </Button>
-        </div>
       </Modal>
     </div>
   );

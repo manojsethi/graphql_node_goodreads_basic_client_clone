@@ -17,8 +17,8 @@ const SideNav = (props: Iprops) => {
 
   return (
     <div>
-      <div className="m-8">
-        <div className="h-100vw bg-slate-400 w-52 font-sans min-h-[50rem] rounded-md pl-8 cursor-pointer">
+      <div className="">
+        <div className="h-100vw bg-slate-400 w-44 font-sans min-h-[50rem] rounded-md pl-8 cursor-pointer">
           <div className="pt-8 font-bold font-sans text-white text-base">
             Fav Genres
           </div>

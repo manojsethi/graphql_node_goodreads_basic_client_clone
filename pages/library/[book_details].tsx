@@ -2,7 +2,6 @@ import Loader from "@/components/appLoader";
 import MyBooksShelfModal from "@/components/pages/library/myBooksShelfModal";
 import {
   Book,
-  useGetBookLazyQuery,
   useGetUpdatedCurrentUserLazyQuery,
   UserBooks,
   useUpdateUserBooksMutation,

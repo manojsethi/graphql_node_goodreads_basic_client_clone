@@ -60,7 +60,7 @@ const SignUpForm = () => {
           <Col xs={2} md={6} lg={9}></Col>
 
           <Col xs={20} md={12} lg={6}>
-            <div className="text-base	font-normal	">Password</div>
+            <div className="text-base	font-normal	">Email</div>
 
             <Form.Item
               name="email"

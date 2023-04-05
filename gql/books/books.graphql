@@ -5,32 +5,23 @@ mutation addBook($input: AddBookInput!, $picture: Upload) {
     image
     author
     description
+    publishDate
     category {
       name
     }
   }
 }
 
-query getBooks {
-  getBooks {
+query getBooks($id: String) {
+  getBooks(id: $id) {
     _id
     name
     image
     author
     description
-    category {
-      name
-    }
-  }
-}
-
-query getBook($id: String!) {
-  getBook(id: $id) {
-    _id
-    name
-    image
-    author
-    description
+    publishDate
+    totalRatingCount
+    totalRatingValue
     category {
       name
     }
@@ -47,6 +38,7 @@ query getBooksByCategory {
       author
       description
       image
+      publishDate
     }
   }
 }

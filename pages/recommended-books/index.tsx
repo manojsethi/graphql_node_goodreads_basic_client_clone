@@ -112,9 +112,9 @@ const RecommendedBooks = () => {
         <Col md={8} xl={4}>
           <DynamicSideNav setCategoryId={setCategoryId} />
         </Col>
-        <Col className="mt-7" md={16} xl={20}>
+        <Col className="" md={16} xl={20}>
           <>
-            <h1 className="ml-5 text-3xl">Recommended Books</h1>
+            <h1 className="text-3xl">Recommended Books</h1>
 
             {[
               ...staticBooks.map((cat) => {
@@ -124,28 +124,30 @@ const RecommendedBooks = () => {
                       categoryId) &&
                       cat.books.length > 0 && (
                         <>
-                          <h1 className="ml-12 text-lg my-6">{cat.name}</h1>
+                          <h1 className="ml-6 text-lg my-6">{cat.name}</h1>
 
                           <Row className="mt-3">
                             {cat.books.map((staticBook, bookIndex) => {
                               return (
                                 <Col
                                   key={bookIndex}
-                                  className="align-center justify-center flex my-4"
-                                  md={6}
-                                  sm={6}
-                                  xl={3}
+                                  className="align-center justify-center flex my-4 border-2 p-2"
                                 >
                                   <div>
-                                    <img
-                                      src={
-                                        !staticBook.image
-                                          ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
-                                          : `${constants.BASE_URL}/photos/${staticBook.image}`
-                                      }
-                                      alt={"staticbooks"}
+                                    <div
+                                      className="flex"
                                       style={{ height: "10rem", width: "7rem" }}
-                                    />
+                                    >
+                                      <img
+                                        className="self-center"
+                                        src={
+                                          !staticBook.image
+                                            ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
+                                            : `${constants.BASE_URL}/photos/${staticBook.image}`
+                                        }
+                                        alt={staticBook.name}
+                                      />
+                                    </div>
                                     <div className="align-center justify-center flex">
                                       {staticBook.name}
                                     </div>
@@ -185,11 +187,12 @@ const RecommendedBooks = () => {
           </>
           <div className="items-center flex justify-center my-20 ">
             <Button
+              disabled={userBooksIds.length == 0}
               onClick={() => Router.push("/library")}
               className="my-20"
               style={{ background: "#F4F1EA" }}
             >
-              I am Finish
+              My library
             </Button>
           </div>
         </Col>

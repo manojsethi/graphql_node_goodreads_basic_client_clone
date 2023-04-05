@@ -18,7 +18,7 @@ const GenreSelectors = () => {
       data: genreUpdateData,
     },
   ] = useUpdateUserGenreMutation({
-    onCompleted: () => Router.push("/recommendedBooks"),
+    onCompleted: () => Router.push("/recommended-books"),
   });
 
   const [genres, setGenres] = useState<any[]>([]);
@@ -84,7 +84,7 @@ const GenreSelectors = () => {
           </Button>
         ) : (
           <Button className="px-10 h-10 bg-slate-100">
-            Select at least one genre to cotinue
+            Select at least one genre to continue
           </Button>
         )}
       </div>

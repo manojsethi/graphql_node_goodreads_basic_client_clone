@@ -2,6 +2,8 @@ import { UserBooks } from "@/gql/generated/graphql";
 import constants from "@/utils/constants";
 import { EditOutlined } from "@ant-design/icons";
 import { Button, Col, Rate, Row } from "antd";
+import { Content } from "antd/es/layout/layout";
+import RatingReviews from "../ratingReviews";
 const buttonsArr: { name: string; icon: any }[] = [
   { name: "Read", icon: <EditOutlined className="text-2xl" /> },
 ];
@@ -11,19 +13,20 @@ const MyBooksUpperPage = (props: {
 }) => {
   return (
     <div>
-      <Row className="mt-20">
-        <Col className="mt-20" md={24} lg={24} xl={5}></Col>
-        <Col md={12} lg={12} xl={6}>
+      <Row gutter={14} className="mt-20">
+        <Col md={8}>
           <div className="items-center justify-center flex">
-            <img
-              src={
-                !props.userBook.book?.image
-                  ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
-                  : `${constants.BASE_URL}/photos/${props.userBook.book?.image}`
-              }
-              alt={"staticbooks"}
-              style={{ height: "10rem", width: "7rem" }}
-            />
+            <div style={{ height: "10rem", width: "9rem" }}>
+              <img
+                className="self-center"
+                src={
+                  !props.userBook.book?.image
+                    ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
+                    : `${constants.BASE_URL}/photos/${props.userBook.book?.image}`
+                }
+                alt={props.userBook.book?.name}
+              />
+            </div>
           </div>
 
           <div className="items-center justify-center flex">
@@ -41,18 +44,39 @@ const MyBooksUpperPage = (props: {
             </Button>
           </div>
         </Col>
-        <Col md={12} lg={12} xl={9}>
+
+        <Col md={16}>
           <h1 className="text-4xl	">{props.userBook.book?.name}</h1>
           <div className="text-2xl ">{props.userBook.book?.author}</div>
-          <Rate className="mt-3" />
+          {props.userBook.book?.totalRatingValue && (
+            <>
+              <div className="mt-3">
+                Total Ratings :{" "}
+                <span>{props.userBook.book.totalRatingCount}</span>
+              </div>
+              <Rate
+                disabled={true}
+                allowHalf
+                value={props.userBook.book.totalRatingValue}
+                className="mt-3"
+              />
+            </>
+          )}
+
           <p className="mt-3 text-base pr-5">
             {props.userBook.book?.description}
           </p>
 
-          <div className="text-base">{props.userBook.createdAt}</div>
+          <div className="text-base">
+            {new Date(props.userBook.book?.publishDate).toLocaleDateString(
+              "en-US"
+            )}
+          </div>
         </Col>
-        <Col md={24} lg={24} xl={5}></Col>
       </Row>
+      <div className="mt-12">
+        <RatingReviews userBook={props.userBook} />
+      </div>
     </div>
   );
 };

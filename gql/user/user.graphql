@@ -42,9 +42,15 @@ query getUpdatedCurrentUser {
         author
         description
         image
+        publishDate
+        totalRatingCount
+        totalRatingValue
       }
       status
-      createdAt
+      want_to_read_time
+      read_time
+      reading_time
+      finish_time
     }
   }
 }
@@ -70,26 +76,13 @@ mutation updateUserBooks($input: UpdateUserBooks!) {
         author
         description
         image
+        publishDate
       }
       status
-      createdAt
-    }
-  }
-}
-
-mutation removeUserBooks($input: UpdateUserBooks!) {
-  removeUserBooks(input: $input) {
-    _id
-    userBooks {
-      book {
-        _id
-        name
-        author
-        description
-        image
-      }
-      status
-      createdAt
+      want_to_read_time
+      read_time
+      reading_time
+      finish_time
     }
   }
 }

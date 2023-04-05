@@ -1,0 +1,25 @@
+mutation addBookRating($input: AddBookRating!) {
+  addBookRating(input: $input) {
+    _id
+    rating
+    review
+    publishDate
+    user {
+      _id
+      name
+    }
+  }
+}
+
+query getBookRating($input: String!) {
+  getBookRating(id: $input) {
+    _id
+    rating
+    review
+    publishDate
+    user {
+      _id
+      name
+    }
+  }
+}

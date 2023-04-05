@@ -1,4 +1,4 @@
-import { staticBooksData } from "@/pages/recommendedBooks";
+import { staticBooksData } from "@/pages/recommended-books";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import { Rate, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";

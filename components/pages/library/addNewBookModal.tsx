@@ -20,7 +20,7 @@ const AddNewBookModal = (props: IAddNewBookModalProps) => {
         onCancel={handleCancel}
       >
         <div className="my-7">
-          <AddNewBookForm />
+          <AddNewBookForm setIsModalOpen={props.setIsModalOpen} />
         </div>
       </Modal>
     </div>

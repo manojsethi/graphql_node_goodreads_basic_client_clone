@@ -30,7 +30,7 @@ const SignInForm = () => {
         if (data.me.category && data.me.category.length == 0)
           Router.push("/genres/select-fav-genres");
         else {
-          Router.push("/recommendedBooks");
+          Router.push("/recommended-books");
         }
       },
     });

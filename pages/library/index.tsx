@@ -38,28 +38,30 @@ const MyBooks = () => {
       title: "Cover",
       dataIndex: "cover",
       key: "cover",
-      width: 300,
+
       render: (row, data) => (
-        <img
-          src={
-            !data.book?.image
-              ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
-              : `${constants.BASE_URL}/photos/${data.book?.image}`
-          }
-          alt={"staticbooks"}
-          style={{ height: "10rem", width: "7rem" }}
-        />
+        <div className="flex" style={{ height: "10rem", width: "7rem" }}>
+          <img
+            className="self-center"
+            src={
+              !data.book?.image
+                ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
+                : `${constants.BASE_URL}/photos/${data.book?.image}`
+            }
+            alt={data.book?.name}
+          />
+        </div>
       ),
     },
     {
       title: "Title",
-      width: 250,
+
       key: "book.name",
       render: (row, data) => data.book?.name,
     },
     {
       title: "Author",
-      width: 250,
+
       key: "book.author",
       render: (row, data) => data.book?.author,
     },
@@ -71,13 +73,16 @@ const MyBooks = () => {
       },
     },
     {
-      title: "Date Added",
-      dataIndex: "createdAt",
-      key: "createdAt",
+      title: "Publish Date",
+      dataIndex: "publishDate",
+      key: "publishDate",
+      render: (row, data) => {
+        return new Date(data.book?.publishDate).toLocaleDateString("en-US");
+      },
     },
     {
       title: "Action",
-      width: 250,
+
       key: "action",
       render: (row, data) => (
         <div
