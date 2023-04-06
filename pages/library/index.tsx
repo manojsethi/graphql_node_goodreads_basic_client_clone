@@ -1,19 +1,15 @@
-import Loader from "@/components/appLoader";
-import AddNewBookModal from "@/components/pages/library/addNewBookModal";
 import MyBooksShelfModal from "@/components/pages/library/myBooksShelfModal";
 import {
-  Book,
-  Book_Status,
   useGetUpdatedCurrentUserLazyQuery,
   User,
   UserBooks,
 } from "@/gql/generated/graphql";
 import constants from "@/utils/constants";
-import { DeleteFilled, EditFilled, EditOutlined } from "@ant-design/icons";
-import { Button, Space, Table } from "antd";
+import { EditFilled } from "@ant-design/icons";
+import { Rate, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
-import dynamic from "next/dynamic";
-import Router, { useRouter } from "next/router";
+import Image from "next/image";
+import Router from "next/router";
 import { useEffect, useState } from "react";
 
 const MyBooks = () => {
@@ -30,9 +26,7 @@ const MyBooks = () => {
     });
   useEffect(() => {
     queryUpdatedMe();
-  }, []);
-  const [addBookModal, setAddBookModal] = useState<boolean>(false);
-  const router = useRouter();
+  }, [queryUpdatedMe]);
   const columns: ColumnsType<UserBooks> = [
     {
       title: "Cover",
@@ -40,22 +34,25 @@ const MyBooks = () => {
       key: "cover",
 
       render: (row, data) => (
-        <div className="flex" style={{ height: "10rem", width: "7rem" }}>
-          <img
-            className="self-center"
+        <div
+          className="flex"
+          style={{ height: "10rem", width: "10rem", position: "relative" }}
+        >
+          <Image
             src={
               !data.book?.image
                 ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
                 : `${constants.BASE_URL}/photos/${data.book?.image}`
             }
-            alt={data.book?.name}
+            alt={data.book!.name}
+            fill
+            objectFit="contain"
           />
         </div>
       ),
     },
     {
       title: "Title",
-
       key: "book.name",
       render: (row, data) => data.book?.name,
     },
@@ -71,6 +68,16 @@ const MyBooks = () => {
       render: (row, data) => {
         return data.status;
       },
+    },
+    {
+      title: "Rating",
+      dataIndex: "rating",
+      key: "rating",
+      render: (row: any, data: any) => (
+        <>
+          <Rate disabled allowHalf value={data.book?.totalRatingValue}></Rate>
+        </>
+      ),
     },
     {
       title: "Publish Date",
@@ -99,7 +106,6 @@ const MyBooks = () => {
     queryUpdatedMe();
     setSelectedRow(undefined);
   };
-  console.log(selectedRow, "selected");
   return (
     <div className="px-20 my-10">
       {selectedRow && (
@@ -121,6 +127,8 @@ const MyBooks = () => {
               scroll={{ x: 1000 }}
               columns={columns}
               dataSource={userBooks}
+              pagination={false}
+              rowKey={(record) => record.book!._id}
             />
           )}
         </div>

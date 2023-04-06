@@ -33,8 +33,7 @@ const AddNewBookForm = (props: { setIsModalOpen: any }) => {
       setFileList(newFileList);
     },
     beforeUpload: (file) => {
-      setFileList([...fileList, file]);
-
+      setFileList([file]);
       return false;
     },
     fileList,
@@ -101,16 +100,8 @@ const AddNewBookForm = (props: { setIsModalOpen: any }) => {
     });
   };
 
-  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
-  };
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
+  const onChange: DatePickerProps["onChange"] = (date, dateString) => {};
 
-  const handleChange = (value: string[]) => {
-    console.log(`selected ${value}`);
-  };
   return (
     <div>
       <Form
@@ -119,7 +110,6 @@ const AddNewBookForm = (props: { setIsModalOpen: any }) => {
         initialValues={{ remember: true }}
         onFinish={onFinish}
         size={"middle"}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Row gutter={16}>

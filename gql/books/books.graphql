@@ -28,6 +28,22 @@ query getBooks($id: String) {
   }
 }
 
+query getBooksByUser {
+  getBooksByUser {
+    _id
+    name
+    image
+    author
+    description
+    publishDate
+    totalRatingCount
+    totalRatingValue
+    category {
+      name
+    }
+  }
+}
+
 query getBooksByCategory {
   getCategories {
     _id

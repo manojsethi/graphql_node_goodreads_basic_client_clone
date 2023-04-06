@@ -60,7 +60,7 @@ const MyBooksShelfModal = (props: {
       handleCancel();
     },
   });
-  console.log(buttonArr, "but");
+
   const handleSelectedBook = (i: Book_Status) => {
     mutateAddUserBook({
       variables: {

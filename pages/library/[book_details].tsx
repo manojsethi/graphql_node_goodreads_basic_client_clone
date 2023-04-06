@@ -1,11 +1,8 @@
 import Loader from "@/components/appLoader";
 import MyBooksShelfModal from "@/components/pages/library/myBooksShelfModal";
 import {
-  Book,
   useGetUpdatedCurrentUserLazyQuery,
-  useNewRatingSubscription,
   UserBooks,
-  useUpdateUserBooksMutation,
 } from "@/gql/generated/graphql";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -43,7 +40,7 @@ const BookDetails = () => {
   );
   useEffect(() => {
     queryUpdatedMe();
-  }, []);
+  }, [queryUpdatedMe]);
 
   return (
     <div>

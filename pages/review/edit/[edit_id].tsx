@@ -26,7 +26,7 @@ const EditReview = () => {
     });
   useEffect(() => {
     queryUpdatedMe();
-  }, []);
+  }, [queryUpdatedMe]);
   const DynamicRatingBooksUpperPage = dynamic(
     () => import("../../../components/pages/ratingReviews/editReviewUpperPart"),
     {

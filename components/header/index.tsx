@@ -1,7 +1,6 @@
 import {
   useGetCurrentUserQuery,
   useLogoutLazyQuery,
-  useLogoutQuery,
 } from "@/gql/generated/graphql";
 import { Avatar, Button, MenuProps } from "antd";
 
@@ -46,18 +45,26 @@ const Header = () => {
           </div>
           <div className="text-stone-600">
             <div className="flex text-lg cursor-pointer mt-1 space-x-5">
+            <p onClick={() => Router.push("/recommended-books")}>
+                Recommended Books
+              </p>
               <p
                 className="cursor-pointer"
                 onClick={() => Router.push("/library")}
               >
                 Library
               </p>
+             
+              
             </div>
           </div>
         </div>
 
         <div className="mt-1">
           <div className="flex space-x-3">
+             <p  className=" text-lg cursor-pointer" onClick={() => Router.push("/my-added-books")}>
+                My Added Books
+              </p>
             <Button onClick={() => setAddBookModal(true)}>Add Book</Button>
             <Dropdown
               className="cursor-pointer"

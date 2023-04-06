@@ -26,7 +26,6 @@ const SignInForm = () => {
   const [getMeQuery, { loading: loadingMe, error: errorMe, data: dataMe }] =
     useGetCurrentUserLazyQuery({
       onCompleted(data) {
-        console.log(data);
         if (data.me.category && data.me.category.length == 0)
           Router.push("/genres/select-fav-genres");
         else {

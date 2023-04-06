@@ -41,7 +41,7 @@ const SideNav = (props: Iprops) => {
                 props.setCategoryId(x._id);
               }}
               key={x._id}
-              className="pt-3 mr-5 text-black  text-stone-600 font-bold cursor-pointer"
+              className="pt-3 mr-5 text-stone-600 font-bold cursor-pointer"
             >
               {x.name}
             </div>

@@ -1,25 +1,36 @@
 import {
   useAddBookRatingMutation,
+  useGetCurrentUserLazyQuery,
   useGetCurrentUserQuery,
-  useGetUpdatedCurrentUserLazyQuery,
   UserBooks,
 } from "@/gql/generated/graphql";
-import { Button, Col, Input, message, Rate, Row } from "antd";
-import Router from "next/router";
 import constants from "@/utils/constants";
-import { useState } from "react";
+import { CheckCircleOutlined } from "@ant-design/icons";
+import { Button, Col, Input, message, notification, Rate, Row } from "antd";
+import Image from "next/image";
+import Router from "next/router";
+import { useEffect, useState } from "react";
 
 const EditReview = (props: { values: string; bookdetails: UserBooks }) => {
   const { TextArea } = Input;
   const [rateValue, setRateValue] = useState<number>();
   const [reviewValue, setReviewValue] = useState<string>();
-  const {
-    loading: loadingUser,
-    error: userError,
-    data: userData,
-  } = useGetCurrentUserQuery();
-  const [mutateAddBookRating, { loading, error, data }] =
-    useAddBookRatingMutation();
+  const [getCurrentUserQuery, { data: userData }] =
+    useGetCurrentUserLazyQuery();
+  useEffect(() => {
+    getCurrentUserQuery();
+  }, [getCurrentUserQuery]);
+  const [mutateAddBookRating] = useAddBookRatingMutation({
+    onCompleted({ addBookRating }) {
+      notification.open({
+        message: "Success",
+        description: "Rating Added Successfully",
+        placement: "topRight",
+        icon: <CheckCircleOutlined style={{ color: "#00FF00" }} />,
+      });
+      Router.push(`/library/${props.bookdetails.book?._id}`);
+    },
+  });
   return (
     <div>
       <Row className="mt-4">
@@ -29,10 +40,18 @@ const EditReview = (props: { values: string; bookdetails: UserBooks }) => {
             {props.bookdetails.book?.name}
           </p>
           <div className="flex space-x-4">
-            <div>
-              <img
-                src={`${constants.BASE_URL}/photos/${props.bookdetails.book?.image}`}
-                style={{ height: "5rem" }}
+            <div
+              style={{ height: "5rem", width: "5rem", position: "relative" }}
+            >
+              <Image
+                src={
+                  !props.bookdetails.book?.image
+                    ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
+                    : `${constants.BASE_URL}/photos/${props.bookdetails.book?.image}`
+                }
+                alt={props.bookdetails.book!.name}
+                fill
+                objectFit="contain"
               />
             </div>
 
@@ -75,7 +94,6 @@ const EditReview = (props: { values: string; bookdetails: UserBooks }) => {
                         },
                       },
                     });
-                Router.push(`/library/${props.bookdetails.book?._id}`);
               }}
               style={{ background: "#F4F1EA" }}
               className="mt-4"

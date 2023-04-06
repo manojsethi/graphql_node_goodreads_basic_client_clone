@@ -6,8 +6,7 @@ import {
   useNewRatingSubscription,
   UserBooks,
 } from "@/gql/generated/graphql";
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Col, Rate, Row, Table } from "antd";
+import { Button, Col, Rate, Row, Table } from "antd";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
@@ -26,7 +25,6 @@ const RatingReviews = (props: { userBook: UserBooks }) => {
             data.data?.newRating as BookRating,
             ...prevState,
           ]);
-          //setBookRatings([...bookRatings, data.data?.newRating]);
         }
       },
     });
@@ -47,7 +45,7 @@ const RatingReviews = (props: { userBook: UserBooks }) => {
         input: props.userBook.book!._id,
       },
     });
-  }, []);
+  }, [queryGetBookRatings, props.userBook.book]);
   const columns = [
     {
       title: "Name",
@@ -129,11 +127,14 @@ const RatingReviews = (props: { userBook: UserBooks }) => {
                       <Table
                         dataSource={[
                           {
+                            _id: myRating?._id,
                             name: myRating?.user.name,
                             review: myRating?.review,
                           },
                         ]}
+                        rowKey={(record) => record._id}
                         columns={columns}
+                        pagination={false}
                       ></Table>
                     </>
                   )}
@@ -173,6 +174,8 @@ const RatingReviews = (props: { userBook: UserBooks }) => {
                       publishDate: x.publishDate,
                     };
                   })}
+                  rowKey={(record) => record._id}
+                  pagination={false}
                   columns={communityColumns}
                 ></Table>
               </div>

@@ -133,6 +133,7 @@ export type Query = {
   __typename?: 'Query';
   getBookRating: Array<BookRating>;
   getBooks: Array<Book>;
+  getBooksByUser: Array<Book>;
   getCategories: Array<Category>;
   getCategoryById: Category;
   getUpdatedMe: User;
@@ -207,6 +208,11 @@ export type GetBooksQueryVariables = Exact<{
 
 
 export type GetBooksQuery = { __typename?: 'Query', getBooks: Array<{ __typename?: 'Book', _id: string, name: string, image?: string | null, author?: string | null, description?: string | null, publishDate?: any | null, totalRatingCount?: number | null, totalRatingValue?: number | null, category: Array<{ __typename?: 'Category', name: string }> }> };
+
+export type GetBooksByUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBooksByUserQuery = { __typename?: 'Query', getBooksByUser: Array<{ __typename?: 'Book', _id: string, name: string, image?: string | null, author?: string | null, description?: string | null, publishDate?: any | null, totalRatingCount?: number | null, totalRatingValue?: number | null, category: Array<{ __typename?: 'Category', name: string }> }> };
 
 export type GetBooksByCategoryQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -382,6 +388,50 @@ export function useGetBooksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetBooksQueryHookResult = ReturnType<typeof useGetBooksQuery>;
 export type GetBooksLazyQueryHookResult = ReturnType<typeof useGetBooksLazyQuery>;
 export type GetBooksQueryResult = Apollo.QueryResult<GetBooksQuery, GetBooksQueryVariables>;
+export const GetBooksByUserDocument = gql`
+    query getBooksByUser {
+  getBooksByUser {
+    _id
+    name
+    image
+    author
+    description
+    publishDate
+    totalRatingCount
+    totalRatingValue
+    category {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetBooksByUserQuery__
+ *
+ * To run a query within a React component, call `useGetBooksByUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBooksByUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBooksByUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetBooksByUserQuery(baseOptions?: Apollo.QueryHookOptions<GetBooksByUserQuery, GetBooksByUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBooksByUserQuery, GetBooksByUserQueryVariables>(GetBooksByUserDocument, options);
+      }
+export function useGetBooksByUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBooksByUserQuery, GetBooksByUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBooksByUserQuery, GetBooksByUserQueryVariables>(GetBooksByUserDocument, options);
+        }
+export type GetBooksByUserQueryHookResult = ReturnType<typeof useGetBooksByUserQuery>;
+export type GetBooksByUserLazyQueryHookResult = ReturnType<typeof useGetBooksByUserLazyQuery>;
+export type GetBooksByUserQueryResult = Apollo.QueryResult<GetBooksByUserQuery, GetBooksByUserQueryVariables>;
 export const GetBooksByCategoryDocument = gql`
     query getBooksByCategory {
   getCategories {

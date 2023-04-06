@@ -2,24 +2,20 @@ import Loader from "@/components/appLoader";
 import {
   Book,
   Book_Status,
-  useAddBookMutation,
+  Category,
   useGetBooksByCategoryLazyQuery,
-  useGetBooksByCategoryQuery,
-  useGetBooksQuery,
   useGetCategoryByIdLazyQuery,
   useGetCurrentUserQuery,
   useGetUpdatedCurrentUserLazyQuery,
   User,
   useUpdateUserBooksMutation,
 } from "@/gql/generated/graphql";
+import constants from "@/utils/constants";
 import { CheckOutlined } from "@ant-design/icons";
 import { Button, Col, Row } from "antd";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import Router from "next/router";
 import { useEffect, useState } from "react";
-import { Category } from "@/gql/generated/graphql";
-import constants from "@/utils/constants";
 export const staticBooksData: {
   name: string;
   image: string;
@@ -82,7 +78,7 @@ const RecommendedBooks = () => {
     } else {
       getBooksByCategoryQuery();
     }
-  }, [categoryId]);
+  }, [categoryByIdQuery, categoryId, getBooksByCategoryQuery, queryUpdatedMe]);
   const [
     mutateAddUserBook,
     {
@@ -117,9 +113,9 @@ const RecommendedBooks = () => {
             <h1 className="text-3xl">Recommended Books</h1>
 
             {[
-              ...staticBooks.map((cat) => {
+              ...staticBooks.map((cat, index) => {
                 return (
-                  <>
+                  <div key={index}>
                     {(dataMe?.me.category.map((x) => x._id).includes(cat._id) ||
                       categoryId) &&
                       cat.books.length > 0 && (
@@ -131,48 +127,59 @@ const RecommendedBooks = () => {
                               return (
                                 <Col
                                   key={bookIndex}
-                                  className="align-center justify-center flex my-4 border-2 p-2"
+                                  className="align-center justify-center flex my-4 border-2 p-2 mx-3"
                                 >
                                   <div>
                                     <div
                                       className="flex"
-                                      style={{ height: "10rem", width: "7rem" }}
+                                      style={{
+                                        height: "10rem",
+                                        width: "7rem",
+                                        position: "relative",
+                                      }}
                                     >
-                                      <img
-                                        className="self-center"
+                                      <Image
                                         src={
                                           !staticBook.image
                                             ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
                                             : `${constants.BASE_URL}/photos/${staticBook.image}`
                                         }
                                         alt={staticBook.name}
+                                        fill
+                                        objectFit="contain"
                                       />
                                     </div>
                                     <div className="align-center justify-center flex">
                                       {staticBook.name}
                                     </div>
-                                    <Button
-                                      disabled={userBooksIds.includes(
-                                        staticBook._id
-                                      )}
-                                      onClick={() =>
-                                        onWantToReadHandler(staticBook)
-                                      }
-                                      className={
-                                        userBooksIds.includes(staticBook._id)
-                                          ? "bg-green-100 mt-3"
-                                          : "bg-slate-100 mt-3"
-                                      }
-                                    >
-                                      {userBooksIds.includes(staticBook._id) ? (
-                                        <>
-                                          <CheckOutlined className="text-green-600	" />
-                                          Added
-                                        </>
-                                      ) : (
-                                        "Want to read"
-                                      )}
-                                    </Button>
+                                    <div className="align-center justify-center flex">
+                                      <Button
+                                        disabled={userBooksIds.includes(
+                                          staticBook._id
+                                        )}
+                                        onClick={() =>
+                                          onWantToReadHandler(staticBook)
+                                        }
+                                        className={`mx-auto
+                                        ${
+                                          userBooksIds.includes(staticBook._id)
+                                            ? "bg-green-100 mt-3"
+                                            : "bg-slate-100 mt-3"
+                                        }
+                                          `}
+                                      >
+                                        {userBooksIds.includes(
+                                          staticBook._id
+                                        ) ? (
+                                          <>
+                                            <CheckOutlined className="text-green-600	" />
+                                            Added
+                                          </>
+                                        ) : (
+                                          "Want to read"
+                                        )}
+                                      </Button>
+                                    </div>
                                   </div>
                                 </Col>
                               );
@@ -180,21 +187,11 @@ const RecommendedBooks = () => {
                           </Row>
                         </>
                       )}
-                  </>
+                  </div>
                 );
               }),
             ]}
           </>
-          <div className="items-center flex justify-center my-20 ">
-            <Button
-              disabled={userBooksIds.length == 0}
-              onClick={() => Router.push("/library")}
-              className="my-20"
-              style={{ background: "#F4F1EA" }}
-            >
-              My library
-            </Button>
-          </div>
         </Col>
       </Row>
     </div>

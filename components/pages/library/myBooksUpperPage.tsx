@@ -2,7 +2,7 @@ import { UserBooks } from "@/gql/generated/graphql";
 import constants from "@/utils/constants";
 import { EditOutlined } from "@ant-design/icons";
 import { Button, Col, Rate, Row } from "antd";
-import { Content } from "antd/es/layout/layout";
+import Image from "next/image";
 import RatingReviews from "../ratingReviews";
 const buttonsArr: { name: string; icon: any }[] = [
   { name: "Read", icon: <EditOutlined className="text-2xl" /> },
@@ -16,15 +16,18 @@ const MyBooksUpperPage = (props: {
       <Row gutter={14} className="mt-20">
         <Col md={8}>
           <div className="items-center justify-center flex">
-            <div style={{ height: "10rem", width: "9rem" }}>
-              <img
-                className="self-center"
+            <div
+              style={{ height: "10rem", width: "10rem", position: "relative" }}
+            >
+              <Image
                 src={
                   !props.userBook.book?.image
                     ? "https://www.shutterstock.com/image-vector/default-image-icon-thin-linear-260nw-2136460353.jpg"
                     : `${constants.BASE_URL}/photos/${props.userBook.book?.image}`
                 }
-                alt={props.userBook.book?.name}
+                alt={props.userBook.book!.name}
+                fill
+                objectFit="contain"
               />
             </div>
           </div>
