@@ -6,8 +6,11 @@ export default function middleware(req: NextRequest) {
   if (!accessToken && !req.nextUrl.pathname.startsWith("/auth/"))
     return NextResponse.redirect(new URL("/auth/sign-in", req.url));
 
-  if (accessToken && req.nextUrl.pathname.startsWith("/auth/")) {
-    return NextResponse.redirect(new URL("/", req.url));
+  if (
+    accessToken &&
+    (req.nextUrl.pathname.startsWith("/auth/") || req.nextUrl.pathname == "/")
+  ) {
+    return NextResponse.redirect(new URL("/recommended-books", req.url));
   }
 }
 
