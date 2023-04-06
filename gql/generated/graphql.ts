@@ -155,6 +155,16 @@ export type QueryGetCategoryByIdArgs = {
   id: Scalars['String'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  newRating: BookRating;
+};
+
+
+export type SubscriptionNewRatingArgs = {
+  bookId: Scalars['String'];
+};
+
 export type UpdateUserBooks = {
   bookId: Scalars['String'];
   status?: InputMaybe<Book_Status>;
@@ -216,6 +226,13 @@ export type GetBookRatingQueryVariables = Exact<{
 
 
 export type GetBookRatingQuery = { __typename?: 'Query', getBookRating: Array<{ __typename?: 'BookRating', _id: string, rating: number, review: string, publishDate: any, user: { __typename?: 'User', _id: string, name: string } }> };
+
+export type NewRatingSubscriptionVariables = Exact<{
+  bookId: Scalars['String'];
+}>;
+
+
+export type NewRatingSubscription = { __typename?: 'Subscription', newRating: { __typename?: 'BookRating', _id: string, rating: number, review: string, publishDate: any, user: { __typename?: 'User', _id: string, name: string, email: string } } };
 
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -490,6 +507,44 @@ export function useGetBookRatingLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetBookRatingQueryHookResult = ReturnType<typeof useGetBookRatingQuery>;
 export type GetBookRatingLazyQueryHookResult = ReturnType<typeof useGetBookRatingLazyQuery>;
 export type GetBookRatingQueryResult = Apollo.QueryResult<GetBookRatingQuery, GetBookRatingQueryVariables>;
+export const NewRatingDocument = gql`
+    subscription NewRating($bookId: String!) {
+  newRating(bookId: $bookId) {
+    _id
+    rating
+    review
+    publishDate
+    user {
+      _id
+      name
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useNewRatingSubscription__
+ *
+ * To run a query within a React component, call `useNewRatingSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewRatingSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewRatingSubscription({
+ *   variables: {
+ *      bookId: // value for 'bookId'
+ *   },
+ * });
+ */
+export function useNewRatingSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewRatingSubscription, NewRatingSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<NewRatingSubscription, NewRatingSubscriptionVariables>(NewRatingDocument, options);
+      }
+export type NewRatingSubscriptionHookResult = ReturnType<typeof useNewRatingSubscription>;
+export type NewRatingSubscriptionResult = Apollo.SubscriptionResult<NewRatingSubscription>;
 export const GetCategoriesDocument = gql`
     query getCategories {
   getCategories {

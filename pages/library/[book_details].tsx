@@ -3,6 +3,7 @@ import MyBooksShelfModal from "@/components/pages/library/myBooksShelfModal";
 import {
   Book,
   useGetUpdatedCurrentUserLazyQuery,
+  useNewRatingSubscription,
   UserBooks,
   useUpdateUserBooksMutation,
 } from "@/gql/generated/graphql";

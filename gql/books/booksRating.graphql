@@ -23,3 +23,17 @@ query getBookRating($input: String!) {
     }
   }
 }
+
+subscription NewRating($bookId: String!) {
+  newRating(bookId: $bookId) {
+    _id
+    rating
+    review
+    publishDate
+    user {
+      _id
+      name
+      email
+    }
+  }
+}

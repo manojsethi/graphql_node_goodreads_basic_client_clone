@@ -3,6 +3,7 @@ import {
   Book_Status,
   useGetBookRatingLazyQuery,
   useGetCurrentUserQuery,
+  useNewRatingSubscription,
   UserBooks,
 } from "@/gql/generated/graphql";
 import { UserOutlined } from "@ant-design/icons";
@@ -14,6 +15,22 @@ const RatingReviews = (props: { userBook: UserBooks }) => {
   const [bookRatings, setBookRatings] = useState<BookRating[]>([]);
   const [myRating, setMyBookRatings] = useState<BookRating>();
   const { data: dataMe } = useGetCurrentUserQuery();
+  const { data: dataNewComment, loading: loadingNewComment } =
+    useNewRatingSubscription({
+      variables: {
+        bookId: props.userBook.book!._id,
+      },
+      onData({ data }) {
+        if (data.data?.newRating) {
+          setBookRatings((prevState) => [
+            data.data?.newRating as BookRating,
+            ...prevState,
+          ]);
+          //setBookRatings([...bookRatings, data.data?.newRating]);
+        }
+      },
+    });
+
   const [queryGetBookRatings, { loading, error, data }] =
     useGetBookRatingLazyQuery({
       onCompleted({ getBookRating }) {
@@ -96,72 +113,71 @@ const RatingReviews = (props: { userBook: UserBooks }) => {
     <div className="mt-12">
       <Row>
         <Col md={24}>
-          {bookRatings.length > 0 ||
-            (bookRatings.length == 0 &&
-              props.userBook.status == Book_Status.Finish && (
-                <>
-                  <hr />
-                  <div>
-                    <h2 className="text-3xl font-semibold mt-6">
-                      Rating & Reviews
-                    </h2>
-                    <div className="mt-8"></div>
-                    {myRating && (
-                      <>
-                        <p className="text-xl">My Review</p>
-                        <Table
-                          dataSource={[
-                            {
-                              name: myRating?.user.name,
-                              review: myRating?.review,
-                            },
-                          ]}
-                          columns={columns}
-                        ></Table>
-                      </>
-                    )}
-                  </div>
+          <>
+            {props.userBook.status == Book_Status.Finish && (
+              <>
+                <hr />
+                <div>
+                  <h2 className="text-3xl font-semibold mt-6">
+                    Rating & Reviews
+                  </h2>
 
+                  {myRating && (
+                    <>
+                      <div className="mt-8"></div>
+                      <p className="text-xl">My Review</p>
+                      <Table
+                        dataSource={[
+                          {
+                            name: myRating?.user.name,
+                            review: myRating?.review,
+                          },
+                        ]}
+                        columns={columns}
+                      ></Table>
+                    </>
+                  )}
+                </div>
+                {!myRating && (
                   <div className="my-10">
-                    {props.userBook.status == Book_Status.Finish &&
-                      !myRating && (
-                        <Button
-                          onClick={() =>
-                            Router.push(
-                              {
-                                pathname: `/review/edit/${props.userBook.book?._id}`,
-                                query: { data: JSON.stringify(props.userBook) },
-                              },
-                              `/review/edit/${props.userBook.book?._id}`
-                            )
-                          }
-                          className="bg-black text-white h-14 p-4 w-44 rounded-3xl"
-                        >
-                          Write a review
-                        </Button>
-                      )}
+                    <Button
+                      onClick={() =>
+                        Router.push(
+                          {
+                            pathname: `/review/edit/${props.userBook.book?._id}`,
+                            query: { data: JSON.stringify(props.userBook) },
+                          },
+                          `/review/edit/${props.userBook.book?._id}`
+                        )
+                      }
+                      className="bg-black text-white h-14 p-4 w-44 rounded-3xl"
+                    >
+                      Write a review
+                    </Button>
                   </div>
-
-                  <hr />
-
-                  <div className="mt-4">
-                    <p className="text-xl">Community Reviews</p>
-                    <Table
-                      dataSource={bookRatings.map((x) => {
-                        return {
-                          _id: x._id,
-                          user: x.user,
-                          name: x.user.name,
-                          review: x.review,
-                          rating: x.rating,
-                          publishDate: x.publishDate,
-                        };
-                      })}
-                      columns={communityColumns}
-                    ></Table>
-                  </div>
-                </>
-              ))}
+                )}
+              </>
+            )}
+            <hr />
+            {bookRatings.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xl">Community Reviews</p>
+                <Table
+                  dataSource={bookRatings.map((x) => {
+                    return {
+                      _id: x._id,
+                      user: x.user,
+                      name: x.user.name,
+                      review: x.review,
+                      rating: x.rating,
+                      publishDate: x.publishDate,
+                    };
+                  })}
+                  columns={communityColumns}
+                ></Table>
+              </div>
+            )}
+          </>
           {bookRatings.length == 0 &&
             props.userBook.status != Book_Status.Finish && (
               <>
