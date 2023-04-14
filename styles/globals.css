@@ -39,3 +39,7 @@ body {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn_good_reads{
+  @apply py-2 rounded-3xl h-full
+}
