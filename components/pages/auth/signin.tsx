@@ -82,17 +82,6 @@ const SignInForm = () => {
           </Col>
         </Row>
       </Form>
-      <div className="sm:w-2/3 md:w-1/2 text-center">
-        <div className="text-center font-normal text-base text-slate-400 mt-1">
-          New to GoodReads ?
-        </div>
-        <Button
-          onClick={() => Router.push("/auth/sign-up")}
-          className="w-2/3 text-black btn_good_reads mt-2"
-        >
-          Sign Up
-        </Button>
-      </div>
     </div>
   );
 };

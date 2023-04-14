@@ -35,19 +35,16 @@ const SignUpForm = () => {
     });
   };
 
-  const onFinishFailed = (errorInfo: any) => {};
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <Form
+        className="mt-7 xs:w-full md:w-2/3"
         name="basic"
-        // wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
       >
-        <Row>
-          <Col xs={2} md={6} lg={9}></Col>
-          <Col xs={20} md={12} lg={6}>
+        <Row className="flex flex-col justify-center items-center">
+          <Col className="xs:w-2/3 md:w-2/4">
             <div className="text-base	font-normal	">Your name</div>
             <Form.Item
               name="name"
@@ -56,10 +53,8 @@ const SignUpForm = () => {
               <Input className="rounded-3xl h-9	bg-slate-100	" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={24} lg={24}></Col>
-          <Col xs={2} md={6} lg={9}></Col>
 
-          <Col xs={20} md={12} lg={6}>
+          <Col className="xs:w-2/3 md:w-2/4">
             <div className="text-base	font-normal	">Email</div>
 
             <Form.Item
@@ -69,9 +64,8 @@ const SignUpForm = () => {
               <Input type={"email"} className="rounded-3xl bg-slate-100	h-9	" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={24} lg={24}></Col>
-          <Col xs={2} md={6} lg={9}></Col>
-          <Col xs={20} md={12} lg={6}>
+
+          <Col className="xs:w-2/3 md:w-2/4">
             <div className="text-base	font-normal	">Password</div>
             <Form.Item
               name="password"
@@ -82,14 +76,38 @@ const SignUpForm = () => {
               <Input.Password className="rounded-3xl bg-slate-100	h-9	" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={24} sm={24} lg={24} xl={24}></Col>
-          <Col xs={2} sm={2} md={6} lg={9} xl={10}></Col>
-          <Col xs={20} sm={20} md={12} lg={6} xl={4}>
+
+          <Col className="xs:w-2/3 md:w-2/4">
+            <div className="text-base	font-normal	">Confirm Password</div>
+            <Form.Item
+              name="confirmPassword"
+              dependencies={["password"]}
+              rules={[
+                { required: true, message: "Please input your password!" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(
+                        "The two passwords that you entered do not match!"
+                      )
+                    );
+                  },
+                }),
+              ]}
+            >
+              <Input.Password className="rounded-3xl bg-slate-100	h-9	" />
+            </Form.Item>
+          </Col>
+
+          <Col className="xs:w-2/3 md:w-2/4">
             <div>
               <Form.Item>
                 <Button
                   loading={loading}
-                  className="bg-black	 text-white w-full h-full px-20	p-2 rounded-3xl"
+                  className="bg-black text-white w-full btn_good_reads"
                   htmlType="submit"
                 >
                   Create Account
