@@ -21,7 +21,7 @@ import { Layout } from "antd";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
-
+import { appWithTranslation } from "next-i18next";
 function createApolloClient() {
   const wsLink =
     typeof window !== "undefined"
@@ -76,7 +76,7 @@ function createApolloClient() {
     cache: new InMemoryCache(),
   });
 }
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   return (
     <ApolloProvider client={createApolloClient()}>
@@ -92,4 +92,5 @@ export default function App({ Component, pageProps }: AppProps) {
       )}
     </ApolloProvider>
   );
-}
+};
+export default appWithTranslation(App);

@@ -1,10 +1,19 @@
 import Loader from "@/components/appLoader";
 import { Button } from "antd";
+import { GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
 import readUsers from "../../../assets/images/goodreads.png";
-const SignUp = () => {
+import { SSRConfig, useTranslation } from "next-i18next";
+import Link from "next/link";
+const SignUp = (props: SSRConfig) => {
+  const router = useRouter();
+  const { t } = useTranslation("common");
+  const changeTo = router.locale === "en" ? "hi" : "en";
+
   const SignUpForm = dynamic(
     () => import("../../../components/pages/auth/signup"),
     {
@@ -17,10 +26,15 @@ const SignUp = () => {
         <div>
           <Image className="mx-auto" src={readUsers} alt={"readusers"} />
         </div>
-        <h1 className="text-4xl font-semibold	text-center mt-7">Sign Up</h1>
+        <h1 className="text-4xl font-semibold	text-center mt-7">
+          {t("signup")}
+        </h1>
         <div className="w-full">
-          <SignUpForm />
+          <SignUpForm locale />
         </div>
+        <Link href="/auth/sign-up" locale={changeTo}>
+          <button>{t("change-locale", { changeTo })}</button>
+        </Link>
         <div>
           <div className="text-center font-normal text-base text-slate-400 mt-1">
             <div>Already have an account?</div>
@@ -35,6 +49,19 @@ const SignUp = () => {
       </div>
     </div>
   );
+};
+interface LocaleProps {
+  locale?: SSRConfig;
+}
+
+export const getStaticProps: GetStaticProps<SSRConfig> = async ({ locale }) => {
+  console.log(locale);
+  debugger;
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
 };
 
 export default SignUp;

@@ -2,8 +2,11 @@ import { useCreateUserMutation } from "@/gql/generated/graphql";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, notification, Row } from "antd";
 import Router from "next/router";
+import { useTranslation } from "next-i18next";
 
-const SignUpForm = () => {
+const SignUpForm = ({ locale }: any) => {
+  const { t } = useTranslation();
+
   const [createUser, { error, loading, data }] = useCreateUserMutation({
     onCompleted({ createUser }) {
       notification.open({
