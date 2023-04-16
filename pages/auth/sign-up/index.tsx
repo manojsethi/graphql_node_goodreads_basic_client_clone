@@ -9,10 +9,15 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import readUsers from "../../../assets/images/goodreads.png";
 import { SSRConfig, useTranslation } from "next-i18next";
 import Link from "next/link";
+import { setLocaleCookie } from "@/utils/methods";
 const SignUp = (props: SSRConfig) => {
   const router = useRouter();
   const { t } = useTranslation("common");
-  const changeTo = router.locale === "en" ? "hi" : "en";
+  const changeTo = () => {
+    let newLocale = router.locale === "en" ? "hi" : "en";
+    setLocaleCookie(newLocale);
+    router.push(router.asPath, undefined, { locale: newLocale });
+  };
 
   const SignUpForm = dynamic(
     () => import("../../../components/pages/auth/signup"),
@@ -32,8 +37,8 @@ const SignUp = (props: SSRConfig) => {
         <div className="w-full">
           <SignUpForm locale />
         </div>
-        <Link href="/auth/sign-up" locale={changeTo}>
-          <button>{t("change-locale", { changeTo })}</button>
+        <Link href="/auth/sign-up">
+          <button onClick={() => changeTo()}>{t("change-locale")}</button>
         </Link>
         <div>
           <div className="text-center font-normal text-base text-slate-400 mt-1">
@@ -55,8 +60,6 @@ interface LocaleProps {
 }
 
 export const getStaticProps: GetStaticProps<SSRConfig> = async ({ locale }) => {
-  console.log(locale);
-  debugger;
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "en", ["common"])),

@@ -4,24 +4,22 @@ import {
   ApolloClient,
   ApolloLink,
   ApolloProvider,
-  HttpLink,
   InMemoryCache,
   split,
 } from "@apollo/client";
-import { WebSocketLink } from "@apollo/client/link/ws";
 
-import "antd/dist/reset.css";
-import type { AppProps } from "next/app";
-import Router, { useRouter } from "next/router";
-import { onError } from "@apollo/client/link/error";
-import { useGetCurrentUserQuery } from "@/gql/generated/graphql";
-import { createUploadLink } from "apollo-upload-client";
 import constants from "@/utils/constants";
-import { Layout } from "antd";
-import { getMainDefinition } from "@apollo/client/utilities";
+import { onError } from "@apollo/client/link/error";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { Layout } from "antd";
+import "antd/dist/reset.css";
+import { createUploadLink } from "apollo-upload-client";
 import { createClient } from "graphql-ws";
 import { appWithTranslation } from "next-i18next";
+import type { AppProps } from "next/app";
+import Router, { useRouter } from "next/router";
+
 function createApolloClient() {
   const wsLink =
     typeof window !== "undefined"
@@ -76,6 +74,7 @@ function createApolloClient() {
     cache: new InMemoryCache(),
   });
 }
+
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   return (

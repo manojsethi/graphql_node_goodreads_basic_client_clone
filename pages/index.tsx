@@ -1,3 +1,6 @@
+import { GetStaticProps } from "next";
+import { SSRConfig } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useEffect } from "react";
 
@@ -17,3 +20,11 @@ export default function Home(props: any) {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps<SSRConfig> = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
+};
