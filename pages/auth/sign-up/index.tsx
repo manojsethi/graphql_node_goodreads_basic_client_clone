@@ -10,6 +10,7 @@ import readUsers from "../../../assets/images/goodreads.png";
 import { SSRConfig, useTranslation } from "next-i18next";
 import Link from "next/link";
 import { setLocaleCookie } from "@/utils/methods";
+import LanguageSwitcher from "@/components/language_switcher";
 const SignUp = (props: SSRConfig) => {
   const router = useRouter();
   const { t } = useTranslation("common");
@@ -34,12 +35,18 @@ const SignUp = (props: SSRConfig) => {
         <h1 className="text-4xl font-semibold	text-center mt-7">
           {t("signup")}
         </h1>
-        <div className="w-full">
-          <SignUpForm locale />
+        <div>
+          <div className="text-center mx-auto font-normal text-base text-slate-400 mt-1">
+            <div className="text-black btn_good_reads mt-2">
+              <span className="mr-5">Change Language</span>
+              <LanguageSwitcher />
+            </div>
+          </div>
         </div>
-        <Link href="/auth/sign-up">
-          <button onClick={() => changeTo()}>{t("change-locale")}</button>
-        </Link>
+        <div className="w-full">
+          <SignUpForm />
+        </div>
+
         <div>
           <div className="text-center font-normal text-base text-slate-400 mt-1">
             <div>Already have an account?</div>

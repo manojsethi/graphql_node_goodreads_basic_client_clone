@@ -10,16 +10,19 @@ export default function middleware(req: NextRequest) {
     return;
   }
   let locale = req.cookies.get("NEXT_LOCALE")?.value || "en";
-  if (req.nextUrl.locale != locale) {
-    //const locale = req.cookies.get("NEXT_LOCALE")?.value || "en";
-    if (req.nextUrl.locale !== locale) {
-      return NextResponse.redirect(
-        new URL(
-          `/${locale}${req.nextUrl.pathname}${req.nextUrl.search}`,
-          req.url
-        )
-      );
-    }
+  let forceRedirect = false;
+  if (!req.cookies.get("NEXT_LOCALE")) {
+    req.cookies.set("NEXT_LOCALE", "en");
+    locale = "en";
+    forceRedirect = true;
+  }
+
+  if (req.nextUrl.locale !== locale || forceRedirect) {
+    const response = NextResponse.redirect(
+      new URL(`/${locale}${req.nextUrl.pathname}${req.nextUrl.search}`, req.url)
+    );
+    response.cookies.set("NEXT_LOCALE", locale);
+    return response;
   }
 
   let accessToken = cookies.get("accessToken")?.value;
