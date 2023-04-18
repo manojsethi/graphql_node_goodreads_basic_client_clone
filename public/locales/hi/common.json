@@ -1,3 +1,8 @@
 {
-  "signup": "नाम लिखो"
+  "already_have_an_account": "क्या आपके पास पहले से एक खाता मौजूद है",
+  "change_language": "भाषा बदलें",
+  "name_is_required": "नाम आवश्यक है",
+  "signin": "दाखिल करना",
+  "signup": "साइन अप करें",
+  "your_name": "अप का नाम"
 }

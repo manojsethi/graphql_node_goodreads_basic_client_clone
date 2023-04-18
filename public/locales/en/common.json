@@ -1,3 +1,8 @@
 {
-  "signup": "Sign Up"
+  "signup": "Sign Up",
+  "signin": "Sign In",
+  "change_language": "Change Language",
+  "already_have_an_account": "Already have an account",
+  "your_name": "Your Name",
+  "name_is_required": "Name is required"
 }

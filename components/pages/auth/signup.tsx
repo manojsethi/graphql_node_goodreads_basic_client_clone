@@ -48,10 +48,10 @@ const SignUpForm = ({ locale }: any) => {
       >
         <Row className="flex flex-col justify-center items-center">
           <Col className="xs:w-2/3 md:w-2/4">
-            <div className="text-base	font-normal	">Your name</div>
+            <div className="text-base	font-normal	">{t("your_name")}</div>
             <Form.Item
               name="name"
-              rules={[{ required: true, message: "Name is required!" }]}
+              rules={[{ required: true, message: `${t("name_is_required")}!` }]}
             >
               <Input className="rounded-3xl h-9	bg-slate-100	" />
             </Form.Item>
