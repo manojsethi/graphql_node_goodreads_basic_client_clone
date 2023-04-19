@@ -1,8 +1,17 @@
 {
-  "already_have_an_account": "क्या आपके पास पहले से एक खाता मौजूद है",
-  "change_language": "भाषा बदलें",
-  "name_is_required": "नाम आवश्यक है",
-  "signin": "दाखिल करना",
   "signup": "साइन अप करें",
-  "your_name": "अप का नाम"
+  "signin": "दाखिल करना",
+  "change_language": "भाषा बदलें",
+  "already_have_an_account": "क्या आपके पास पहले से एक खाता मौजूद है",
+  "your_name": "अप का नाम",
+  "name_is_required": "नाम आवश्यक है",
+  "email": "ईमेल",
+  "email_is_required": "कृपया अपना ईमेल डालें",
+  "password": "पासवर्ड",
+  "password_is_required": "कृपया अपना पासवर्ड डालें!",
+  "confirm_password": "पासवर्ड की पुष्टि कीजिये",
+  "confirm_password_required": "कृपया अपना पुष्टि पासवर्ड डालें!",
+  "confirm_password_match_error": "आपके द्वारा दर्ज किए गए दो पासवर्ड मेल नहीं खाते!",
+  "create_account": "खाता बनाएं",
+  "new_to_good_reads": "गुडरीड्स के लिए नए हैं?"
 }

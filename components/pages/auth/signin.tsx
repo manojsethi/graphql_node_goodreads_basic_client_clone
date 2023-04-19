@@ -4,9 +4,11 @@ import {
 } from "@/gql/generated/graphql";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, notification, Row } from "antd";
+import { useTranslation } from "next-i18next";
 import Router from "next/router";
 
 const SignInForm = () => {
+  const { t } = useTranslation();
   const onFinish = (values: any) => {
     loginUser({
       variables: { input: { email: values.name, password: values.password } },
@@ -47,21 +49,21 @@ const SignInForm = () => {
       >
         <Row className="flex flex-col justify-center items-center">
           <Col className="xs:w-2/3 md:w-2/4">
-            <div className="text-base	font-normal	">Your name</div>
+            <div className="text-base	font-normal	">{t("email")}</div>
             <Form.Item
               name="name"
-              rules={[{ required: true, message: "Name is required!" }]}
+              rules={[{ required: true, message: `${t("email_is_required")}` }]}
             >
               <Input className="rounded-3xl h-9	bg-slate-100" />
             </Form.Item>
           </Col>
           <Col className="xs:w-2/3 md:w-2/4">
-            <div className="text-base	font-normal	">Password</div>
+            <div className="text-base	font-normal	">{t("password")}</div>
 
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: "Please input your password!" },
+                { required: true, message: `${t("password_is_required")}` },
               ]}
             >
               <Input.Password className="rounded-3xl 	h-9 bg-slate-100		" />
@@ -75,7 +77,7 @@ const SignInForm = () => {
                   className="bg-black text-white w-full btn_good_reads"
                   htmlType="submit"
                 >
-                  Sign In
+                  {t("signin")}
                 </Button>
               </Form.Item>
             </div>

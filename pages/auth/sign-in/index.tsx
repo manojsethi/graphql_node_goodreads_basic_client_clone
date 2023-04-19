@@ -24,7 +24,9 @@ const SignIn = () => {
         <div>
           <Image className="mx-auto" src={readUsers} alt={"readusers"} />
         </div>
-        <h1 className="text-4xl font-semibold	text-center mt-7">Sign In</h1>
+        <h1 className="text-4xl font-semibold	text-center mt-7">
+          {t("signin")}
+        </h1>
         <div>
           <div className="text-center mx-auto font-normal text-base text-slate-400 mt-1">
             <div className="text-black btn_good_reads mt-2">
@@ -38,12 +40,12 @@ const SignIn = () => {
         </div>
         <div>
           <div className="text-center font-normal text-base text-slate-400 mt-1">
-            <div> New to GoodReads?</div>
+            <div>{t("new_to_good_reads")}</div>
             <Button
               onClick={() => Router.push("/auth/sign-up")}
               className="xs:w-2/3 md:w-1/3 text-black btn_good_reads mt-2"
             >
-              Sign Up
+              {t("signup")}
             </Button>
           </div>
         </div>

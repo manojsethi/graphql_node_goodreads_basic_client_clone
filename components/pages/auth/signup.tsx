@@ -58,22 +58,22 @@ const SignUpForm = ({ locale }: any) => {
           </Col>
 
           <Col className="xs:w-2/3 md:w-2/4">
-            <div className="text-base	font-normal	">Email</div>
+            <div className="text-base	font-normal	">{t("email")}</div>
 
             <Form.Item
               name="email"
-              rules={[{ required: true, message: "Please input your email" }]}
+              rules={[{ required: true, message: `${t("email_is_required")}` }]}
             >
               <Input type={"email"} className="rounded-3xl bg-slate-100	h-9	" />
             </Form.Item>
           </Col>
 
           <Col className="xs:w-2/3 md:w-2/4">
-            <div className="text-base	font-normal	">Password</div>
+            <div className="text-base	font-normal	">{t("password")}</div>
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: "Please input your password!" },
+                { required: true, message: `${t("password_is_required")}` },
               ]}
             >
               <Input.Password className="rounded-3xl bg-slate-100	h-9	" />
@@ -81,21 +81,22 @@ const SignUpForm = ({ locale }: any) => {
           </Col>
 
           <Col className="xs:w-2/3 md:w-2/4">
-            <div className="text-base	font-normal	">Confirm Password</div>
+            <div className="text-base	font-normal	">{t("confirm_password")}</div>
             <Form.Item
               name="confirmPassword"
               dependencies={["password"]}
               rules={[
-                { required: true, message: "Please input your password!" },
+                {
+                  required: true,
+                  message: `${t("confirm_password_required")}`,
+                },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue("password") === value) {
                       return Promise.resolve();
                     }
                     return Promise.reject(
-                      new Error(
-                        "The two passwords that you entered do not match!"
-                      )
+                      new Error(`${t("confirm_password_match_error")}`)
                     );
                   },
                 }),
@@ -113,7 +114,7 @@ const SignUpForm = ({ locale }: any) => {
                   className="bg-black text-white w-full btn_good_reads"
                   htmlType="submit"
                 >
-                  Create Account
+                  {t("create_account")}
                 </Button>
               </Form.Item>
             </div>
