@@ -84,9 +84,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       ) : (
         <>
           <Header />
-          <Layout.Content className="px-20 lg:container mx-auto">
-            <Component {...pageProps} />
-          </Layout.Content>
+          <Component {...pageProps} />
         </>
       )}
     </ApolloProvider>

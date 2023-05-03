@@ -104,11 +104,11 @@ const RecommendedBooks = () => {
 
   return (
     <div>
-      <Row className="mt-4 ">
+      <Row>
         <Col md={8} xl={4}>
           <DynamicSideNav setCategoryId={setCategoryId} />
         </Col>
-        <Col className="" md={16} xl={20}>
+        <Col className="mt-[52px]" md={16} xl={20}>
           <>
             <h1 className="text-3xl">Recommended Books</h1>
 
